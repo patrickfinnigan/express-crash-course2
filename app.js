@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const exphbs = require("express-handlebars");
 const logger = require("./middleware/logger");
+const members = require("./Members")
 
 const app = express();
 
@@ -9,8 +10,16 @@ const app = express();
 // app.use(logger);
 
 //Handlebars Middleware
-app.engine('handlebars', exphbs());
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+
+//Render the index.handlebars inside main.handlebars and puts it in '/'
+app.get('/', (req, res) => {
+    res.render('index' , {
+        title: 'Member App',
+        members
+    });
+})
 
 // Body Parser Middleware
 app.use(express.json())
